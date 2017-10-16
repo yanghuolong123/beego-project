@@ -1,3 +1,3 @@
 # beego-project
 
-golang 继续出发
+golang beego project
