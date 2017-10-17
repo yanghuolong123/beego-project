@@ -1,11 +1,13 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
+	//	"github.com/astaxie/beego"
+	"go-web/components"
 )
 
 type HomeController struct {
-	beego.Controller
+	//beego.Controller
+	components.BaseController
 }
 
 func (c *HomeController) Get() {
@@ -16,10 +18,18 @@ func (c *HomeController) Get() {
 }
 
 func (c *HomeController) LoginGet() {
+	m := make(map[string]string)
+	m["username"] = "杨活龙"
+	m["email"] = "yhl27ml@163.com"
+	//c.Data["json"] = m
 
-	c.Layout = "layout/main.tpl"
-	c.TplName = "home/login.tpl"
+	//c.ServeJSON()
+
+	c.SendRes(0, "sucess", m)
 }
 
 func (c *HomeController) LoginPost() {
+	email := c.GetString("email")
+	passwd := c.GetString("password")
+	c.Ctx.WriteString(email + ":" + passwd)
 }

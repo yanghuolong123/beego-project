@@ -17,7 +17,7 @@ func (this *LoginController) Get() {
 func (this *LoginController) Post() {
 	email := this.GetString("email")
 	passwd := this.GetString("password")
-	//this.Ctx.WriteString(email + ":" + passwd)
-	_, _ = email, passwd
-	this.Ctx.Redirect(302, "/home/index")
+	this.Ctx.WriteString(email + ":" + passwd)
+	//	_, _ = email, passwd
+	//	this.Ctx.Redirect(302, "/home/index")
 }
