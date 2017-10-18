@@ -16,4 +16,5 @@ func (this *BaseController) SendRes(code int, msg string, data interface{}) {
 
 	this.Data["json"] = m
 	this.ServeJSON()
+	this.StopRun()
 }
