@@ -30,7 +30,7 @@ func (this *LoginController) Post() {
 	}
 
 	this.SetSession("user", u)
-	this.Ctx.Redirect(302, "/login")
+	this.Ctx.Redirect(302, "/home")
 
 	//this.SendRes(0, "login success", u)
 
