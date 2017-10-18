@@ -11,14 +11,15 @@ type HomeController struct {
 	components.BaseController
 }
 
-func (c *HomeController) Get() {
-	c.Data["username"] = "杨火龙"
+func (this *HomeController) Get() {
+	user := this.GetSession("user")
+	this.Data["user"] = user
 
-	c.Layout = "layout/main.tpl"
-	c.TplName = "home/index.tpl"
+	this.Layout = "layout/main.tpl"
+	this.TplName = "home/index.tpl"
 }
 
-func (c *HomeController) LoginGet() {
+func (c *HomeController) TestGet() {
 	//m := make(map[string]string)
 	//m["username"] = "杨活龙"
 	//m["email"] = "yhl27ml@163.com"
@@ -35,7 +36,7 @@ func (c *HomeController) LoginGet() {
 	//c.SendRes(0, "sucess", models.GetAllUser())
 }
 
-func (c *HomeController) LoginPost() {
+func (c *HomeController) TestPost() {
 	email := c.GetString("email")
 	passwd := c.GetString("password")
 	c.Ctx.WriteString(email + ":" + passwd)
