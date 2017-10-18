@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	//	"github.com/astaxie/beego"
+	"github.com/astaxie/beego"
 	"go-web/components"
 	"go-web/models"
 )
@@ -14,6 +14,9 @@ type HomeController struct {
 func (this *HomeController) Get() {
 	user := this.GetSession("user")
 	this.Data["user"] = user
+
+	//	log.Println(user)
+	beego.Debug("11111111111")
 
 	this.Layout = "layout/main.tpl"
 	this.TplName = "home/index.tpl"

@@ -16,5 +16,6 @@ func main() {
 	}
 
 	beego.InsertFilter("/*", beego.BeforeRouter, filterLogin)
+	beego.SetLogger("file", `{"filename":"logs/test.log"}`)
 	beego.Run()
 }
