@@ -12,7 +12,9 @@ func (this *BaseController) SendRes(code int, msg string, data interface{}) {
 	m := make(map[string]interface{})
 	m["code"] = code
 	m["msg"] = msg
-	m["data"] = data
+	if data != nil {
+		m["data"] = data
+	}
 
 	this.Data["json"] = m
 	this.ServeJSON()

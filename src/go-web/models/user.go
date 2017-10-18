@@ -46,6 +46,12 @@ func GetAllUser() map[string]*User {
 	return UserList
 }
 
-func Login(email, password string) bool {
-	return true
+func GetUserLogin(email, password string) (u *User, err error) {
+	for _, u := range UserList {
+		if u.Email == email && u.Password == password {
+			return u, nil
+		}
+	}
+
+	return nil, errors.New("帐号或密码有错误!")
 }
