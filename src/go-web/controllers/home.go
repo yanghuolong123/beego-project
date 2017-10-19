@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	//	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego"
 	"go-web/components/ext"
 	"go-web/components/utils"
 	"go-web/models"
@@ -29,6 +29,10 @@ func (c *HomeController) TestGet() {
 	//c.Data["json"] = m
 
 	//c.ServeJSON()
+
+	dbhost := beego.AppConfig.String("mysqlhost")
+	utils.Logs().Info("==== mysqlhost:" + dbhost)
+	utils.Logs().Info(dbhost)
 
 	m, err := models.GetUser("1")
 	if err != nil {
