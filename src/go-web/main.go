@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
+	//	"github.com/astaxie/beego/logs"
 	_ "go-web/routers"
 )
 
@@ -16,6 +17,10 @@ func main() {
 	}
 
 	beego.InsertFilter("/*", beego.BeforeRouter, filterLogin)
-	beego.SetLogger("file", `{"filename":"logs/test.log"}`)
+	//log := logs.NewLogger(10000)
+	//log.SetLogger(logs.AdapterFile, `{"filename":"logs/11.log"}`)
+	//log.EnableFuncCallDepth(true)
+	//log.Info("dss11111")
+	//	beego.SetLogger("file", `{"filename":"logs/test.log"}`)
 	beego.Run()
 }

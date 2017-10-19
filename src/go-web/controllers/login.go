@@ -2,13 +2,13 @@ package controllers
 
 import (
 	//	"github.com/astaxie/beego"
-	"go-web/components"
+	"go-web/components/ext"
 	"go-web/models"
 )
 
 type LoginController struct {
 	//beego.Controller
-	components.BaseController
+	ext.BaseController
 }
 
 func (this *LoginController) Get() {

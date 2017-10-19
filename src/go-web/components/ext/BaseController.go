@@ -1,4 +1,4 @@
-package components
+package ext
 
 import (
 	"github.com/astaxie/beego"
