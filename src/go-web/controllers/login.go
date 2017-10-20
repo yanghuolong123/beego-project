@@ -24,7 +24,8 @@ func (this *LoginController) Post() {
 	//this.Ctx.WriteString(email + ":" + passwd)
 	//	_, _ = email, passwd
 	//	this.Ctx.Redirect(302, "/home/index")
-	u, err := models.GetUserLogin(email, passwd)
+	//u, err := models.GetUserLogin(email, passwd)
+	u, err := models.Login(email, passwd)
 	if err != nil {
 		this.SendRes(-1, err.Error(), nil)
 	}

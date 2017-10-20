@@ -1,30 +1,14 @@
 package models
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
-)
-
-var (
-	UserList map[string]*User
+	"github.com/astaxie/beego/orm"
 )
 
 func init() {
-	UserList = make(map[string]*User)
-	u1 := User{
-		1,
-		"yanghuolong1",
-		"yhl27ml@163.com",
-		"123456",
-	}
-	u2 := User{
-		2,
-		"yanghuolong2",
-		"yhl27ml@126.com",
-		"123456",
-	}
-
-	UserList["1"] = &u1
-	UserList["2"] = &u2
+	orm.RegisterModelWithPrefix("tbl_", new(User))
 }
 
 type User struct {
@@ -34,24 +18,27 @@ type User struct {
 	Password string
 }
 
-func GetUser(id string) (u *User, err error) {
-	if u, ok := UserList[id]; ok {
-		return u, nil
-	}
+func GetById(id int) (user *User, err error) {
+	o := orm.NewOrm()
+	user = &User{Id: id}
+	err = o.Read(user)
 
-	return nil, errors.New("没有此数据")
+	return
 }
 
-func GetAllUser() map[string]*User {
-	return UserList
-}
+func Login(username, password string) (*User, error) {
+	h := md5.New()
+	h.Write([]byte(password))
+	password = hex.EncodeToString(h.Sum(nil))
 
-func GetUserLogin(email, password string) (u *User, err error) {
-	for _, u := range UserList {
-		if u.Email == email && u.Password == password {
-			return u, nil
-		}
+	o := orm.NewOrm()
+	user := new(User)
+	user.Username = username
+	user.Password = password
+	err := o.Read(user, "username", "password")
+	if err != nil {
+		return nil, errors.New("帐号或密码有误！")
 	}
 
-	return nil, errors.New("帐号或密码有错误!")
+	return user, nil
 }
