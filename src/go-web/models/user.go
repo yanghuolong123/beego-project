@@ -1,10 +1,9 @@
 package models
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"errors"
 	"github.com/astaxie/beego/orm"
+	"go-web/components/utils"
 )
 
 func init() {
@@ -27,9 +26,7 @@ func GetById(id int) (user *User, err error) {
 }
 
 func Login(username, password string) (*User, error) {
-	h := md5.New()
-	h.Write([]byte(password))
-	password = hex.EncodeToString(h.Sum(nil))
+	password = utils.Md5(password)
 
 	o := orm.NewOrm()
 	user := new(User)
