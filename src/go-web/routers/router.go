@@ -8,9 +8,10 @@ import (
 func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/home", &controllers.HomeController{})
-	beego.Router("test", &controllers.HomeController{}, "get:TestGet;post:TestPost")
+	beego.Router("/test", &controllers.HomeController{}, "get:TestGet;post:TestPost")
 	beego.Router("/login", &controllers.LoginController{})
 	beego.Router("/logout", &controllers.LoginController{}, "get,post:Logout")
+	beego.Router("/webupload", &controllers.UploadController{}, "*:Webupload")
 	//beego.AutoRouter(&controllers.LoginController{})
 	//	beego.Router("/login/login", &controllers.HomeController{}, "post:Post")
 }
