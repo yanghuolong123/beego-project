@@ -7,6 +7,7 @@ import (
 	"go-web/components/utils"
 	"go-web/models"
 	"log"
+	"time"
 )
 
 type HomeController struct {
@@ -54,6 +55,10 @@ func (c *HomeController) TestGet() {
 	}
 	b, _ := models.Login("yhl27ml@163.com", "654321")
 	log.Println(b)
+	err = utils.Redis().Put("test1", "1111111", 60*time.Second)
+	err = utils.Redis().Put("test2", "2222222222222", 60*time.Second)
+	log.Println("err:", err)
+	log.Println("test1:", string(utils.Redis().Get("test1").([]uint8)))
 
 	c.SendRes(0, "sucess", u)
 	//c.SendRes(0, "sucess", models.GetAllUser())
