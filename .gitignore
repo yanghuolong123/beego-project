@@ -1,3 +1,4 @@
 bin/
 pkg/
 src/go-web/go-web
+src/go-web/static/uploads/
