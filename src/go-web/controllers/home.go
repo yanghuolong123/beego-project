@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"go-web/components/ext"
 	"go-web/components/utils"
 	"go-web/models"
 	"log"
+	"os"
 	"time"
 )
 
@@ -59,6 +61,16 @@ func (c *HomeController) TestGet() {
 	err = utils.Redis().Put("test2", "2222222222222", 60*time.Second)
 	log.Println("err:", err)
 	log.Println("test1:", string(utils.Redis().Get("test1").([]uint8)))
+
+	y, month, d := utils.Date()
+	log.Println("y/m/d:", y, month, d)
+	dir := fmt.Sprintf("%d/%d/%d", y, month, d)
+	dir = "static/uploads/" + dir
+	os.MkdirAll(dir, os.ModePerm)
+	log.Println(dir)
+	log.Println(int(time.November))
+	log.Println(time.Now().Format(utils.DatetimeFormat))
+	log.Println("Exist:", utils.PathExist("static/uploads/tmp"))
 
 	c.SendRes(0, "sucess", u)
 	//c.SendRes(0, "sucess", models.GetAllUser())
