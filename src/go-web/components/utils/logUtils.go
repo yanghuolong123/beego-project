@@ -4,11 +4,13 @@ import (
 	"github.com/astaxie/beego/logs"
 )
 
-func Logs() (log *logs.BeeLogger) {
-	log = logs.NewLogger(10000)
-	log.SetLogger(logs.AdapterConsole, "")
-	//log.SetLogger(logs.AdapterFile, `{"filename":"/var/log/go-web/go-web.log"}`)
-	log.EnableFuncCallDepth(true)
+var (
+	Log *logs.BeeLogger
+)
 
-	return
+func init() {
+	Log = logs.NewLogger(10000)
+	Log.SetLogger(logs.AdapterConsole, "")
+	//Log.SetLogger(logs.AdapterFile, `{"filename":"/var/log/go-web/go-web.log"}`)
+	Log.EnableFuncCallDepth(true)
 }

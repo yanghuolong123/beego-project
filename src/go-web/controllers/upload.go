@@ -19,7 +19,7 @@ type UploadController struct {
 
 func (this *UploadController) Webupload() {
 	method := this.Ctx.Input.Method()
-	utils.Logs().Info("method:" + method)
+	utils.Log.Info("method:" + method)
 	if method == "OPTIONS" {
 		this.StopRun()
 	}
@@ -28,7 +28,7 @@ func (this *UploadController) Webupload() {
 	chunk := this.Ctx.Input.Query("chunk")
 	f, h, err := this.GetFile("file")
 	if err != nil {
-		utils.Logs().Info(err.Error())
+		utils.Log.Info(err.Error())
 	}
 	defer f.Close()
 	ext := filepath.Ext(h.Filename)
@@ -37,7 +37,7 @@ func (this *UploadController) Webupload() {
 	part := prefix + filename + "_" + chunk + ".part"
 	this.SaveToFile("file", part)
 	count, err := strconv.Atoi(chunks)
-	redis := utils.Redis()
+	redis := utils.Redis
 	redis.Incr(filename)
 	num, err := strconv.Atoi(string(redis.Get(filename).([]uint8)))
 	y, m, d := utils.Date()
@@ -45,10 +45,11 @@ func (this *UploadController) Webupload() {
 	if num == count {
 		redis.Delete(filename)
 		log.Println("==================== num:", num)
-		if !utils.PathExist(dir) {
-			os.MkdirAll(dir, os.ModePerm)
+		outDir := "static/" + dir
+		if !utils.PathExist(outDir) {
+			os.MkdirAll(outDir, os.ModePerm)
 		}
-		outfile := "static/" + dir + fmt.Sprintf("%d%d", time.Now().Unix(), utils.RandNum(10000, 99999)) + ext
+		outfile := outDir + fmt.Sprintf("%d%d", time.Now().Unix(), utils.RandNum(10000, 99999)) + ext
 		out, _ := os.OpenFile(outfile, os.O_CREATE|os.O_WRONLY, 0600)
 		bWriter := bufio.NewWriter(out)
 		for i := 0; i < count; i++ {
@@ -70,6 +71,6 @@ func (this *UploadController) Webupload() {
 		bWriter.Flush()
 	}
 
-	utils.Logs().Info("filename:" + filename + " chunks:" + chunks + " chunk:" + chunk)
+	utils.Log.Info("filename:" + filename + " chunks:" + chunks + " chunk:" + chunk)
 	this.SendResJsonp(0, "ok", dir+filename)
 }
