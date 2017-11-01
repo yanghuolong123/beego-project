@@ -67,11 +67,11 @@ func (c *HomeController) TestGet() {
 	}
 	b, _ := models.Login("yhl27ml@163.com", "654321")
 	log.Println(b)
-	redis := utils.Redis
-	err = redis.Put("test1", "1111111", 60*time.Second)
-	err = redis.Put("test2", "2222222222222", 60*time.Second)
+	cache := utils.Cache
+	err = cache.Put("test1", "1111111", 60*time.Second)
+	err = cache.Put("test2", "2222222222222", 60*time.Second)
 	log.Println("err:", err)
-	log.Println("test1:", string(redis.Get("test1").([]uint8)))
+	log.Println("test1:", string(cache.Get("test1").([]uint8)))
 
 	y, month, d := utils.Date()
 	log.Println("y/m/d:", y, month, d)
@@ -84,7 +84,7 @@ func (c *HomeController) TestGet() {
 	log.Println("Exist:", utils.PathExist("static/uploads/tmp"))
 	globalNum++
 	log.Println("======= globalNum:", globalNum)
-	log.Println("gg=", string(redis.Get("gg").([]byte)))
+	log.Println("gg=", string(cache.Get("gg").([]byte)))
 
 	c.SendRes(0, "sucess", u)
 	//c.SendRes(0, "sucess", models.GetAllUser())
@@ -93,5 +93,12 @@ func (c *HomeController) TestGet() {
 func (c *HomeController) TestPost() {
 	email := c.GetString("email")
 	passwd := c.GetString("password")
+	cache := utils.Cache
+	err := cache.Put("email", email, 60*time.Second)
+	_ = err
+	p := cache.Get("email").([]byte)
+	utils.Log.Info(string(p))
+	conn := `11111:` + email + `"dsdsds"`
+	utils.Log.Info(conn)
 	c.Ctx.WriteString(email + ":" + passwd)
 }

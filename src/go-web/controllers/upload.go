@@ -37,13 +37,13 @@ func (this *UploadController) Webupload() {
 	part := prefix + filename + "_" + chunk + ".part"
 	this.SaveToFile("file", part)
 	count, err := strconv.Atoi(chunks)
-	redis := utils.Redis
-	redis.Incr(filename)
-	num, err := strconv.Atoi(string(redis.Get(filename).([]uint8)))
+	cache := utils.Cache
+	cache.Incr(filename)
+	num, err := strconv.Atoi(string(cache.Get(filename).([]uint8)))
 	y, m, d := utils.Date()
 	dir := "uploads/" + fmt.Sprintf("%d/%d/%d/", y, m, d)
 	if num == count {
-		redis.Delete(filename)
+		cache.Delete(filename)
 		log.Println("==================== num:", num)
 		outDir := "static/" + dir
 		if !utils.PathExist(outDir) {
