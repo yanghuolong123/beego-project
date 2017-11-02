@@ -101,6 +101,7 @@ func (c *HomeController) TestPost() {
 	conn := `11111:` + email + `"dsdsds"`
 	utils.Log.Info(conn)
 	go func() {
+		time.Sleep(30 * time.Second)
 		utils.Log.Info("=================================")
 	}()
 	utils.Log.Info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
