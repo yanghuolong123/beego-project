@@ -100,5 +100,9 @@ func (c *HomeController) TestPost() {
 	utils.Log.Info(string(p))
 	conn := `11111:` + email + `"dsdsds"`
 	utils.Log.Info(conn)
+	go func() {
+		utils.Log.Info("=================================")
+	}()
+	utils.Log.Info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
 	c.Ctx.WriteString(email + ":" + passwd)
 }

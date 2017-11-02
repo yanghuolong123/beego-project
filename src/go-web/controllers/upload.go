@@ -43,32 +43,35 @@ func (this *UploadController) Webupload() {
 	y, m, d := utils.Date()
 	dir := "uploads/" + fmt.Sprintf("%d/%d/%d/", y, m, d)
 	if num == count {
-		cache.Delete(filename)
 		log.Println("==================== num:", num)
-		outDir := "static/" + dir
-		if !utils.PathExist(outDir) {
-			os.MkdirAll(outDir, os.ModePerm)
-		}
-		outfile := outDir + fmt.Sprintf("%d%d", time.Now().Unix(), utils.RandNum(10000, 99999)) + ext
-		out, _ := os.OpenFile(outfile, os.O_CREATE|os.O_WRONLY, 0600)
-		bWriter := bufio.NewWriter(out)
-		for i := 0; i < count; i++ {
-			infile := prefix + filename + "_" + strconv.Itoa(i) + ".part"
-			in, _ := os.Open(infile)
-			bReader := bufio.NewReader(in)
-			for {
-				buffer := make([]byte, 1024)
-				readCount, err := bReader.Read(buffer)
-				if err == io.EOF {
-					os.Remove(infile)
-					break
-				} else {
-					bWriter.Write(buffer[:readCount])
-				}
+		go func(prefix, filename, dir, ext string) {
+			cache.Delete(filename)
+			outDir := "static/" + dir
+			if !utils.PathExist(outDir) {
+				os.MkdirAll(outDir, os.ModePerm)
 			}
-			log.Println("==================== i:", i)
-		}
-		bWriter.Flush()
+			outfile := outDir + fmt.Sprintf("%d%d", time.Now().Unix(), utils.RandNum(10000, 99999)) + ext
+			out, _ := os.OpenFile(outfile, os.O_CREATE|os.O_WRONLY, 0600)
+			bWriter := bufio.NewWriter(out)
+			for i := 0; i < count; i++ {
+				infile := prefix + filename + "_" + strconv.Itoa(i) + ".part"
+				in, _ := os.Open(infile)
+				bReader := bufio.NewReader(in)
+				for {
+					buffer := make([]byte, 1024)
+					readCount, err := bReader.Read(buffer)
+					if err == io.EOF {
+						os.Remove(infile)
+						break
+					} else {
+						bWriter.Write(buffer[:readCount])
+					}
+				}
+				log.Println("==================== i:", i)
+			}
+			bWriter.Flush()
+
+		}(prefix, filename, dir, ext)
 	}
 
 	utils.Log.Info("filename:" + filename + " chunks:" + chunks + " chunk:" + chunk)
