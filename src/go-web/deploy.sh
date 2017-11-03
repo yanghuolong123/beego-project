@@ -16,9 +16,9 @@ ssh -p $PORT $USERNAME@$HOST "rm -rf $DIR/*"
 echo "删除旧有目录完成!"
 
 scp -P$PORT go-web $USERNAME@$HOST:$DIR
-scp -p$PORT -r views $USERNAME@$HOST:$DIR
-scp -p$PORT -r static $USERNAME@$HOST:$DIR
-scp -p$PORT -r conf $USERNAME@$HOST:$DIR
+scp -P$PORT -r views $USERNAME@$HOST:$DIR
+scp -P$PORT -r static $USERNAME@$HOST:$DIR
+scp -P$PORT -r conf $USERNAME@$HOST:$DIR
 
 echo "部署完成!"
 
